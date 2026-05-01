@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="008f0619-c124-4e24-a9bf-1a2da7f2c7c4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/deck/api/DeckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/deck/api/DeckController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/deck/model/CardRef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/deck/model/CardRef.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/deck/api/DeckControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/example/deck/api/DeckControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,7 +16,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="19" />
+    <option name="cachedIndexableFilesCount" value="20" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -39,6 +41,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "JUnit.DeckControllerTest.executor": "Run",
+    "JUnit.DeckControllerTest.shouldPersistAndReturnImageUris.executor": "Run",
     "Maven.mtgDeckBuilder [clean].executor": "Run",
     "Maven.mtgDeckBuilder [install].executor": "Run",
     "RunOnceActivity.MCP Project settings loaded": "true",
@@ -80,6 +83,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="DeckControllerTest.shouldPersistAndReturnImageUris" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mtgDeckBuilder" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.deck.api.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.deck.api" />
+      <option name="MAIN_CLASS_NAME" value="com.example.deck.api.DeckControllerTest" />
+      <option name="METHOD_NAME" value="shouldPersistAndReturnImageUris" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
       <module name="mtgDeckBuilder" />
@@ -98,6 +117,7 @@
       <list>
         <item itemvalue="Spring Boot.Main" />
         <item itemvalue="JUnit.DeckControllerTest" />
+        <item itemvalue="JUnit.DeckControllerTest.shouldPersistAndReturnImageUris" />
       </list>
     </recent_temporary>
   </component>
