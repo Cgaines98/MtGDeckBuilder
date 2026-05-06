@@ -27,19 +27,20 @@ public class DeckService {
         this.deckRepository = deckRepository;
     }
 
-    public List<Deck> listDecks() {
-        return deckRepository.findAll(Sort.by(Sort.Direction.DESC, "updatedAt"));
+    public List<Deck> listDecks(String userId) {
+        return deckRepository.findAllByUserId(userId, Sort.by(Sort.Direction.DESC, "updatedAt"));
     }
 
-    public Deck getDeck(UUID deckId) {
-        return deckRepository.findById(deckId)
+    public Deck getDeck(UUID deckId, String userId) {
+        return deckRepository.findByIdAndUserId(deckId, userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Deck not found"));
     }
 
-    public Deck createDeck(CreateDeckRequest request) {
+    public Deck createDeck(CreateDeckRequest request, String userId) {
         Instant now = Instant.now();
         Deck deck = new Deck(
                 UUID.randomUUID(),
+                userId,
                 request.name().trim(),
                 request.format().trim(),
                 request.description(),
@@ -51,8 +52,8 @@ public class DeckService {
         return deckRepository.save(deck);
     }
 
-    public Deck updateDeck(UUID deckId, UpdateDeckRequest request) {
-        Deck deck = getDeck(deckId);
+    public Deck updateDeck(UUID deckId, UpdateDeckRequest request, String userId) {
+        Deck deck = getDeck(deckId, userId);
         deck.setName(request.name().trim());
         deck.setFormat(request.format().trim());
         deck.setDescription(request.description());
@@ -60,15 +61,15 @@ public class DeckService {
         return deckRepository.save(deck);
     }
 
-    public void deleteDeck(UUID deckId) {
-        if (!deckRepository.existsById(deckId)) {
+    public void deleteDeck(UUID deckId, String userId) {
+        if (!deckRepository.existsByIdAndUserId(deckId, userId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Deck not found");
         }
         deckRepository.deleteById(deckId);
     }
 
-    public Deck upsertCard(UUID deckId, UpsertDeckCardRequest request) {
-        Deck deck = getDeck(deckId);
+    public Deck upsertCard(UUID deckId, UpsertDeckCardRequest request, String userId) {
+        Deck deck = getDeck(deckId, userId);
         List<DeckCardEntry> target = request.sideboard() ? deck.getSideboard() : deck.getMainboard();
 
         int index = -1;
@@ -91,8 +92,8 @@ public class DeckService {
         return deckRepository.save(deck);
     }
 
-    public Deck removeCard(UUID deckId, String oracleId, boolean sideboard) {
-        Deck deck = getDeck(deckId);
+    public Deck removeCard(UUID deckId, String oracleId, boolean sideboard, String userId) {
+        Deck deck = getDeck(deckId, userId);
         List<DeckCardEntry> target = sideboard ? deck.getSideboard() : deck.getMainboard();
         target.removeIf(entry -> entry.card().oracleId().equals(oracleId));
         deck.setUpdatedAt(Instant.now());
