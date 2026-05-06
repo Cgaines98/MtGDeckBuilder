@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 public class Deck {
     @Id
     private UUID id;
+    private String userId;
     private String name;
     private String format;
     private String description;
@@ -28,8 +29,9 @@ public class Deck {
     public Deck() {
     }
 
-    public Deck(UUID id, String name, String format, String description, List<DeckCardEntry> mainboard, List<DeckCardEntry> sideboard, Instant createdAt, Instant updatedAt) {
+    public Deck(UUID id, String userId, String name, String format, String description, List<DeckCardEntry> mainboard, List<DeckCardEntry> sideboard, Instant createdAt, Instant updatedAt) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
         this.format = format;
         this.description = description;
@@ -41,6 +43,14 @@ public class Deck {
 
     public UUID getId() {
         return id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getName() {

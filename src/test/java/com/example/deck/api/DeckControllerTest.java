@@ -1,11 +1,15 @@
 package com.example.deck.api;
 
+import com.example.config.TestSecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -15,8 +19,12 @@ import com.example.deck.model.CardRef;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+    "spring.security.oauth2.resourceserver.jwt.issuer-uri=https://example.com",
+    "spring.security.oauth2.resourceserver.jwt.audience=test-audience"
+})
 @AutoConfigureMockMvc
+@Import(TestSecurityConfig.class)
 public class DeckControllerTest {
 
     @Autowired
@@ -27,7 +35,7 @@ public class DeckControllerTest {
 
     @Test
     public void shouldReturnOkForListDecks() throws Exception {
-        mockMvc.perform(get("/api/decks"))
+        mockMvc.perform(get("/api/decks").with(jwt()))
                 .andExpect(status().isOk());
     }
 
@@ -44,7 +52,7 @@ public class DeckControllerTest {
     public void shouldPersistAndReturnImageUris() throws Exception {
         // 1. Create a deck
         String createDeckJson = objectMapper.writeValueAsString(new CreateDeckRequest("Test Deck", "Standard", "Description"));
-        String response = mockMvc.perform(post("/api/decks")
+        String response = mockMvc.perform(post("/api/decks").with(jwt())
                         .contentType("application/json")
                         .content(createDeckJson))
                 .andExpect(status().isCreated())
@@ -67,14 +75,14 @@ public class DeckControllerTest {
         UpsertDeckCardRequest upsertRequest = new UpsertDeckCardRequest(card, 4, false);
         String upsertJson = objectMapper.writeValueAsString(upsertRequest);
 
-        mockMvc.perform(put("/api/decks/" + deckId + "/cards")
+        mockMvc.perform(put("/api/decks/" + deckId + "/cards").with(jwt())
                         .contentType("application/json")
                         .content(upsertJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.mainboard[0].card.imageUris", is(longImageUri)));
 
         // 3. Get the deck again to verify persistence
-        mockMvc.perform(get("/api/decks/" + deckId))
+        mockMvc.perform(get("/api/decks/" + deckId).with(jwt()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.mainboard[0].card.imageUris", is(longImageUri)));
     }
